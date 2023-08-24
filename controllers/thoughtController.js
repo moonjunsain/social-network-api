@@ -1,5 +1,6 @@
 const {Thought, User} = require('../models/index')
 
+// getting all thoughts
 async function getThoughts(req, res){
     try{
         const thoughts = await Thought.find()
@@ -9,6 +10,8 @@ async function getThoughts(req, res){
         res.status(500).json(err)
     }
 }
+
+// getting one thought
 async function getOneThought(req, res){
     try{
         const {thoughtId} = req.params
@@ -39,6 +42,8 @@ async function makeNewThought(req, res){
         //         ]
         //     }
         // }
+
+        // checking if the user exists in the first place
         const userCheck = await User.findById(req.body.userId)
 
         if(!userCheck){
@@ -50,6 +55,7 @@ async function makeNewThought(req, res){
         const thought = await Thought.create(req.body.thought)
         console.log(thought._id)
 
+        // updating corresponding user
         const user = await User.findOneAndUpdate(
             {_id: req.body.userId},
             {$addToSet: {thoughts: thought._id}},
@@ -63,6 +69,8 @@ async function makeNewThought(req, res){
         res.status(500).json(err)
     }
 }
+
+// updating a thought
 async function updateThought(req, res){
     try{
         const {thoughtId} = req.params
@@ -82,6 +90,8 @@ async function updateThought(req, res){
         res.status(500).json(err)
     }
 }
+
+// deleting a thought
 async function deleteThought(req, res){
     try{
         const {thoughtId, userId} = req.params
@@ -91,6 +101,7 @@ async function deleteThought(req, res){
             return res.status(404).json({message: 'thought not found'})
         }
 
+        // updating user to remove that thought
         const user = await User.findOneAndUpdate(
             {_id: userId},
             {$pull: {thoughts: thought._id}},
