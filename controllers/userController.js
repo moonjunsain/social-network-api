@@ -50,6 +50,26 @@ async function deleteUser(req, res){
     }
 }
 
+async function updateUser(req, res){
+    try{
+        const {userId} = req.params
+        const user = await User.findOneAndUpdate(
+            {_id: userId},
+            req.body,
+            {new: true, runValidators: true}
+        )
+        
+        if(!user){
+            return res.status(404).json({message: 'user not found'})
+        }
+
+        res.status(200).json({message: 'succesfully updated', updatedUser: user})
+
+    }catch(err){
+        res.status(500).json(err)
+    }
+}
+
 // /api/users/:userId/friends/:friendId
 async function addNewFriend(req, res){
     try{
@@ -106,5 +126,6 @@ module.exports = {
     makeNewUser,
     deleteUser,
     addNewFriend,
-    deleteFriend
+    deleteFriend,
+    updateUser
 }
