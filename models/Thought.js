@@ -7,7 +7,7 @@ const thoughtSchema = new mongoose.Schema(
         createdAt: {
             type: Date, 
             default: Date.now,
-            get: getFormattedDate
+            get: (date) => date.toLocaleDateString()
 
         },
         username: { type: String, required: true },
@@ -21,21 +21,11 @@ const thoughtSchema = new mongoose.Schema(
     }
 )
 
-// sets the method for formatting date
-function getFormattedDate(createdDate){
-    const date = new Date(createdDate)
-    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
-    return formattedDate
-}
 
 // setting virtual
 thoughtSchema.virtual('reactionCount').get(function(){
     if(this.reactions){
-        if(this.reactions.length){
-            return this.reactions.length
-        }else{
-            return 1
-        }
+       return this.reactions.length
     }else {
         return 0
     }

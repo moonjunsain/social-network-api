@@ -18,15 +18,7 @@ const reactionSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        get: getFormattedDate
+        get: (date) => date.toLocaleDateString()
     }
 })
-
-// sets the method for formatting date
-function getFormattedDate(createdDate){
-    const date = new Date(createdDate)
-    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
-    return formattedDate
-}
-
 module.exports = reactionSchema

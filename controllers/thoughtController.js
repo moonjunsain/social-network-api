@@ -31,7 +31,6 @@ async function makeNewThought(req, res){
         //     userId : 'userid',
         //     thought: {
         //         thoughtText: 'thought text',
-        //         username: 'username',
         //         reactions: [
         //             {
         //                 reactionBody: 'asdf',
@@ -40,15 +39,27 @@ async function makeNewThought(req, res){
         //         ]
         //     }
         // }
+        const userCheck = await User.findById(req.body.userId)
+
+        if(!userCheck){
+            return res.status(404).json({message: 'user not existing'})
+        }
+
+        req.body.thought.username = userCheck.username
+
         const thought = await Thought.create(req.body.thought)
+        console.log(thought._id)
 
         const user = await User.findOneAndUpdate(
             {_id: req.body.userId},
             {$addToSet: {thoughts: thought._id}},
             {new: true}
         )
+
+
         res.status(200).json({message: 'created a new thought', thought, user})
     }catch(err){
+        console.log(err)
         res.status(500).json(err)
     }
 }
@@ -121,10 +132,11 @@ async function createReaction(req, res){
 // /api/thoughts/:thoughtId/reactions/:reactionId
 async function deleteReaction(req, res){
     try{
+        console.log('route hit')
         const {thoughtId, reactionId} = req.params
         const thought = await Thought.findOneAndUpdate(
             {_id: thoughtId},
-            {$pull: {reactions: reactionId}},
+            {$pull: {reactions: {reactionId: reactionId}}},
             {new: true}
         )
 

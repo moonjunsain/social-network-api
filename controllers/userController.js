@@ -15,11 +15,11 @@ async function getUsers(req, res){
 async function getOneUser(req, res){
     try{
         const {userId} = req.params
-        const user = await User.findOne({_id: userId}).select('-__v').populate(['thoughts', 'friends'])
+        const user = await User.findOne({_id: userId}).select('-__v').populate('friends').populate('thoughts')
         if(!user){
             return res.status(404).json({message: "No user found"})
         }
-
+        console.log(user)
         res.status(200).json(user)
 
     }catch(err){

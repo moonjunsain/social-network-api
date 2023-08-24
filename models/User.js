@@ -19,14 +19,14 @@ const userSchema =
                     message: 'That email does not look like an email at all'
                 }
             },
-            thoughts: {
+            thoughts: [{
                 type: Schema.Types.ObjectId,
                 ref: 'thought'
-            },
-            friends: {
+            }],
+            friends: [{
                 type: Schema.Types.ObjectId,
                 ref: 'user'
-            },
+            }],
 
         },
         {
@@ -40,11 +40,7 @@ const userSchema =
 // virtual
 userSchema.virtual('friendCount').get(function(){
     if(this.friends){
-        if(this.friends.length){
-            return this.friends.length
-        }else {
-            return 1
-        }
+        return this.friends.length
     }else {
         return 0
     }
