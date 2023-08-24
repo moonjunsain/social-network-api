@@ -32,7 +32,7 @@ npm i
 
 Following is the demo of this app. The user can add, delete and update a user or thought.
 
-[demo]()
+[demo](https://drive.google.com/file/d/1E9woJR_F4Tj2thfrKXK9D84cltR6yIMi/view)
 
 
 ## Learning Points
