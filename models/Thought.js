@@ -30,7 +30,15 @@ function getFormattedDate(createdDate){
 
 // setting virtual
 thoughtSchema.virtual('reactionCount').get(function(){
-    return this.reactions.length
+    if(this.reactions){
+        if(this.reactions.length){
+            return this.reactions.length
+        }else{
+            return 1
+        }
+    }else {
+        return 0
+    }
 })
 
 const Thought = mongoose.model('thought', thoughtSchema)
