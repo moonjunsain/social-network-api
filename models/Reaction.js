@@ -19,6 +19,11 @@ const reactionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
         get: (date) => date.toLocaleDateString()
+    },
+},
+{
+    toJSON: {
+        getters: true
     }
 })
 module.exports = reactionSchema
